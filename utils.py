@@ -8,6 +8,7 @@ import datetime
 import os.path
 
 mac = get_mac()
+# calId = "baa41f255293072c05bd9b9e29e7206b59e2637f5cc4dabf7159297e15c9cdf0@group.calendar.google.com"
 calId = "primary"
 
 SCOPES = ["https://www.googleapis.com/auth/calendar.readonly", "https://www.googleapis.com/auth/calendar", "https://www.googleapis.com/auth/calendar.events", "https://www.googleapis.com/auth/calendar.events.readonly", "https://www.googleapis.com/auth/calendar.readonly", "https://www.googleapis.com/auth/calendar.settings.readonly"]
@@ -64,14 +65,15 @@ def updateCal(sub:str, topic:str, addn:str=None)->None:
     try:
         service = build("calendar", "v3", credentials=creds)
         due = datetime.datetime.now()+datetime.timedelta(days=7,hours=0,minutes=0) 
-        # a = list(map(int, due.strftime("%Y-%m-%d").split("-")))
-        # due = datetime.datetime(a[0], a[1],a[2])
-        # start = due.isoformat()+"Z"
-        # print(start)
-        end = due+datetime.timedelta(hours=2,minutes=0)
+        due1 = datetime.datetime.now()+datetime.timedelta(days=14,hours=0,minutes=0) 
+        due2 = datetime.datetime.now()+datetime.timedelta(days=21,hours=0,minutes=0) 
+        
+        end0 = due+datetime.timedelta(hours=2,minutes=0)
+        end1 = due+datetime.timedelta(hours=2,minutes=0)
+        end2 = due+datetime.timedelta(hours=2,minutes=0)
         # Define the details of the event
         event = {
-            "summary": sub + ": "+ topic,
+            "summary": "1 "+ sub + ": "+ topic,
             'description': addn or "No remark",
             'start': {
                 # 'dateTime': due.strftime(start) ,
@@ -92,10 +94,55 @@ def updateCal(sub:str, topic:str, addn:str=None)->None:
                 ]
             }
         }
+        
         # Insert the event into the Google Calendar and execute the request
         created_event = service.events().insert(calendarId=calId, body=event).execute()
-        # Print the link to view the created event
-        print(f"Event created: {created_event.get('htmlLink')}")
+        event1 = {
+            "summary": "2 "+ sub + ": "+ topic,
+            'description': addn or "No remark",
+            'start': {
+                # 'dateTime': due.strftime(start) ,
+                'date': due1.strftime("%Y-%m-%d"),
+                'timeZone': 'Asia/Kolkata'
+                },
+            # 'end': {'dateTime': end.isoformat()+"Z", 'timeZone': 'Asia/Kolkata'},
+            'end':{
+                # 'dateTime': due.strftime(start) ,
+                'date': due1.strftime("%Y-%m-%d"),
+                'timeZone': 'Asia/Kolkata'
+                },
+            'reminders': {
+                'useDefault': False,
+                'overrides': [
+                {'method': 'email', 'minutes': 24 * 60},
+                {'method': 'popup', 'minutes': 10},
+                ]
+            }
+        }
+        created_event1 = service.events().insert(calendarId=calId, body=event1).execute()
+        event2 = {
+            "summary": "3 "+ sub + ": "+ topic,
+            'description': addn or "No remark",
+            'start': {
+                # 'dateTime': due.strftime(start) ,
+                'date': due2.strftime("%Y-%m-%d"),
+                'timeZone': 'Asia/Kolkata'
+                },
+            # 'end': {'dateTime': end.isoformat()+"Z", 'timeZone': 'Asia/Kolkata'},
+            'end':{
+                # 'dateTime': due.strftime(start) ,
+                'date': due2.strftime("%Y-%m-%d"),
+                'timeZone': 'Asia/Kolkata'
+                },
+            'reminders': {
+                'useDefault': False,
+                'overrides': [
+                {'method': 'email', 'minutes': 24 * 60},
+                {'method': 'popup', 'minutes': 10},
+                ]
+            }
+        }
+        created_event2 = service.events().insert(calendarId=calId, body=event2).execute()
     # Handle HTTP errors
     except HttpError as error:
         print (f"An error occurred: {error}")
