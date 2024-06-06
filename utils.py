@@ -8,12 +8,12 @@ import datetime
 import os.path
 
 mac = get_mac()
-calId = "baa41f255293072c05bd9b9e29e7206b59e2637f5cc4dabf7159297e15c9cdf0@group.calendar.google.com"
+calId = "primary"
 
 SCOPES = ["https://www.googleapis.com/auth/calendar.readonly", "https://www.googleapis.com/auth/calendar", "https://www.googleapis.com/auth/calendar.events", "https://www.googleapis.com/auth/calendar.events.readonly", "https://www.googleapis.com/auth/calendar.readonly", "https://www.googleapis.com/auth/calendar.settings.readonly"]
 
 creds = None
-if os.path.exists(f"{mac}token.json"):
+if os.path.exists(f"26801205048542token.json"):
     creds = Credentials.from_authorized_user_file(f"{mac}token.json", SCOPES)
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
@@ -24,7 +24,7 @@ else:
     )
     creds = flow.run_local_server(port=0)
     # Save the credentials for the next run
-    with open(f"{mac}token.json", "w") as token:
+    with open(f"26801205048542token.json", "w") as token:
         token.write(creds.to_json())
 
 def show():
