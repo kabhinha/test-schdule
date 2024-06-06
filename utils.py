@@ -14,7 +14,7 @@ SCOPES = ["https://www.googleapis.com/auth/calendar.readonly", "https://www.goog
 
 creds = None
 if os.path.exists(f"26801205048542token.json"):
-    creds = Credentials.from_authorized_user_file(f"{mac}token.json", SCOPES)
+    creds = Credentials.from_authorized_user_file(f"26801205048542token.json", SCOPES)
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
